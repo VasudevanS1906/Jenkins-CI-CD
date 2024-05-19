@@ -14,8 +14,10 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh "docker build -t ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER} ."
-            }
+                script {
+                    sh "docker build -t ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER} ."
+                    }
+                }
         }
 
         stage('Test') {
