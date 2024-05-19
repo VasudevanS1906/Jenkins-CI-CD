@@ -9,6 +9,22 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/VasudevanS1906/Jenkins-CI-CD.git'
             }
         }
+        stage('Verify Docker') {
+            steps {
+                sh 'docker version'
+            }
+        }
+        stage('Check Docker Service') {
+            steps {
+                sh 'service docker status'
+                sh 'service docker restart'
+            }
+        }
+        stage('Check Docker Logs') {
+            steps {
+                sh 'docker logs'
+            }
+        }
         stage('Build') {
             steps {
                 script {
