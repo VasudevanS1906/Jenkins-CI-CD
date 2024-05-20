@@ -1,5 +1,5 @@
 pipeline {
-    agent {
+    agent any {
         docker {
             image 'wrax382/jenkins-ci-cd:latest'
         }
