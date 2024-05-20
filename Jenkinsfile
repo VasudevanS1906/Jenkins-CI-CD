@@ -3,27 +3,17 @@ pipeline {
     stages {
         stage('Pull Docker Image') {
             steps {
-                node {
-                    docker.image('wrax382/jenkins-ci-cd:latest').pull()
-                }
+                sh 'docker pull wrax382/jenkins-ci-cd:latest'
             }
         }
         stage('Test') {
             steps {
-                node {
-                    docker.image('wrax382/jenkins-ci-cd:latest').withRun('-u root') {
-                        sh 'npm test'
-                    }
-                }
+                sh 'docker run -u root wrax382/jenkins-ci-cd:latest npm test'
             }
         }
         stage('Deploy') {
             steps {
-                node {
-                    docker.image('wrax382/jenkins-ci-cd:latest').withRun('-u root') {
-                        sh 'npm run deploy'
-                    }
-                }
+                sh 'docker run -u root wrax382/jenkins-ci-cd:latest npm run deploy'
             }
         }
     }
