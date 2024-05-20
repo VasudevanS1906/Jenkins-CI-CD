@@ -4,9 +4,7 @@ pipeline {
         stage('Pull Docker Image') {
             steps {
                 node {
-                    docker.withRegistry('', 'dockerHubCredentials') {
-                        docker.image('wrax382/jenkins-ci-cd:latest').pull()
-                    }
+                    docker.image('wrax382/jenkins-ci-cd:latest').pull()
                 }
             }
         }
