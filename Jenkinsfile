@@ -1,18 +1,29 @@
 pipeline {
-    agent {
-        docker {
-            image 'wrax382/jenkins-ci-cd:latest'
-        }
-    }
+    agent any
     stages {
+        stage('Pull Docker Image') {
+            steps {
+                node {
+                    docker.image('wrax382/jenkins-ci-cd:latest').pull()
+                }
+            }
+        }
         stage('Test') {
             steps {
-                sh 'npm test'
+                node {
+                    docker.image('wrax382/jenkins-ci-cd:latest').inside {
+                        sh 'npm test'
+                    }
+                }
             }
         }
         stage('Deploy') {
             steps {
-                sh 'npm run deploy'
+                node {
+                    docker.image('wrax382/jenkins-ci-cd:latest').inside {
+                        sh 'npm run deploy'
+                    }
+                }
             }
         }
     }
