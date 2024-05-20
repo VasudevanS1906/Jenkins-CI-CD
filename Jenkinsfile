@@ -8,12 +8,12 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'docker run -u root wrax382/jenkins-ci-cd:latest npm test'
+                sh 'docker run --privileged -u root wrax382/jenkins-ci-cd:latest npm test'
             }
         }
         stage('Deploy') {
             steps {
-                sh 'docker run -u root wrax382/jenkins-ci-cd:latest npm run deploy'
+                sh 'docker run --privileged -u root wrax382/jenkins-ci-cd:latest npm run deploy'
             }
         }
     }
