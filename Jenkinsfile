@@ -11,7 +11,7 @@ pipeline {
         stage('Test') {
             steps {
                 node {
-                    docker.image('wrax382/jenkins-ci-cd:latest').inside {
+                    docker.image('wrax382/jenkins-ci-cd:latest').withRun('-u root') {
                         sh 'npm test'
                     }
                 }
@@ -20,7 +20,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 node {
-                    docker.image('wrax382/jenkins-ci-cd:latest').inside {
+                    docker.image('wrax382/jenkins-ci-cd:latest').withRun('-u root') {
                         sh 'npm run deploy'
                     }
                 }
