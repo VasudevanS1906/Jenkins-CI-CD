@@ -1,19 +1,19 @@
 pipeline {
-    agent any
-    stages {
-        stage('Pull Docker Image') {
-            steps {
-                sh 'docker pull wrax382/jenkins-ci-cd:latest'
-            }
+    agent {
+        docker {
+            image 'wrax382/jenkins-ci-cd:latest'
+            args '--user root'
         }
+    }
+    stages {
         stage('Test') {
             steps {
-                sh 'docker run --privileged -u root wrax382/jenkins-ci-cd:latest npm test'
+                sh 'npm test'
             }
         }
         stage('Deploy') {
             steps {
-                sh 'docker run --privileged -u root wrax382/jenkins-ci-cd:latest npm run deploy'
+                sh 'npm run deploy'
             }
         }
     }
