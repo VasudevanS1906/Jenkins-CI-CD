@@ -1,19 +1,26 @@
 pipeline {
-    agent {
-        docker {
-            image 'wrax382/jenkins-ci-cd:latest'
-            args '--user root'
-        }
+    agent any
+    
+    environment {
+        DOCKER_IMAGE = "wrax382/jenkins-ci-cd"
+        DOCKER_CREDENTIALS = "docker-hub-credentials"
     }
+    
     stages {
-        stage('Test') {
+        stage('Checkout') {
             steps {
-                sh 'npm test'
+                checkout scm
             }
         }
-        stage('Deploy') {
+        
+        stage('Deploy to Docker') {
             steps {
-                sh 'npm run deploy'
+                script {
+                    docker.withRegistry('', DOCKER_CREDENTIALS) {
+                        docker.image("${DOCKER_IMAGE}").pull()
+                        docker.image("${DOCKER_IMAGE}").run("-p 3000:3000")
+                    }
+                }
             }
         }
     }
