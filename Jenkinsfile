@@ -25,3 +25,34 @@ pipeline {
         }
     }
 }
+
+
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = 'your-docker-hub-username/your-image-name:tag'
+        KUBERNETES_NAMESPACE = 'your-kubernetes-namespace'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                withKubeConfig([credentialsId: 'your-kubernetes-credentials-id', serverUrl: 'https://your-kubernetes-api-server']) {
+                    sh """
+                        kubectl set image deployment/your-deployment-name \
+                            your-container-name=${env.DOCKER_IMAGE} \
+                            --namespace=${env.KUBERNETES_NAMESPACE} \
+                            --record
+                    """
+                }
+            }
+        }
+    }
+}
